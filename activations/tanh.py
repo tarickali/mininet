@@ -16,11 +16,7 @@ class Tanh(Activation):
     """
 
     def func(self, x: np.ndarray) -> np.ndarray:
-        """ """
-
         return np.tanh(x)
 
     def grad(self, x: np.ndarray) -> np.ndarray:
-        """ """
-
         return 1 - np.tanh(x) ** 2

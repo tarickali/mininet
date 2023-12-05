@@ -16,12 +16,8 @@ class SoftPlus(Activation):
     """
 
     def func(self, x: np.ndarray) -> np.ndarray:
-        """ """
-
         return np.log(1 + np.exp(x))
 
     def grad(self, x: np.ndarray) -> np.ndarray:
-        """ """
-
         e = np.exp(x)
         return e / (1 + e)

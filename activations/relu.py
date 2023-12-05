@@ -16,11 +16,7 @@ class ReLU(Activation):
     """
 
     def func(self, x: np.ndarray) -> np.ndarray:
-        """ """
-
         return np.maximum(x, 0)
 
     def grad(self, x: np.ndarray) -> np.ndarray:
-        """ """
-
         return (x > 0).astype(x.dtype)

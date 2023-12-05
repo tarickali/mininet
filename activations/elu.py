@@ -26,11 +26,7 @@ class ELU(Activation):
         self.alpha = alpha
 
     def func(self, x: np.ndarray) -> np.ndarray:
-        """ """
-
         return np.where(x >= 0, x, self.alpha * (np.exp(x) - 1))
 
     def grad(self, x: np.ndarray) -> np.ndarray:
-        """ """
-
         return np.where(x >= 0, np.ones_like(x), self.alpha * np.exp(x))

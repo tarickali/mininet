@@ -26,11 +26,7 @@ class LeakyReLU(Activation):
         self.alpha = alpha
 
     def func(self, x: np.ndarray) -> np.ndarray:
-        """ """
-
         return np.maximum(0, x) + np.minimum(0, x) * self.alpha
 
     def grad(self, x: np.ndarray) -> np.ndarray:
-        """ """
-
         return (x > 0).astype(x.dtype) + (x <= 0).astype(x.dtype) * self.alpha

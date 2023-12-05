@@ -22,11 +22,7 @@ class Affine(Activation):
         self.intercept = intercept
 
     def func(self, x: np.ndarray) -> np.ndarray:
-        """ """
-
         return self.slope * x + self.intercept
 
     def grad(self, x: np.ndarray) -> np.ndarray:
-        """ """
-
         return np.full_like(x, self.slope)

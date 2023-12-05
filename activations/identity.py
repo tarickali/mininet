@@ -16,11 +16,7 @@ class Identity(Activation):
     """
 
     def func(self, x: np.ndarray) -> np.ndarray:
-        """ """
-
         return x
 
     def grad(self, x: np.ndarray) -> np.ndarray:
-        """ """
-
         return np.ones_like(x)
