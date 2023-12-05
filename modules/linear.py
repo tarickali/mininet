@@ -1,7 +1,7 @@
 """
 title : linear.py
 create : @tarickali 23/11/26
-update : @tarickali 23/11/29
+update : @tarickali 23/12/05
 """
 
 from typing import Any
@@ -34,7 +34,7 @@ class Linear(Module):
         self.init_parameters()
 
     def init_parameters(self) -> None:
-        """ """
+        """Initialize the parameters of the Module."""
 
         self.parameters = {
             "W": self.weight_initializer((self.input_dim, self.output_dim)),
@@ -49,18 +49,6 @@ class Linear(Module):
         assert self.parameters["b"].shape == (self.output_dim,)
 
     def forward(self, X: np.ndarray) -> np.ndarray:
-        """
-
-        Parameters
-        ----------
-        X : np.ndarray @ (m, n_in)
-
-        Returns
-        -------
-
-
-        """
-
         # Get Module weights and bias
         W, b = self.parameters["W"], self.parameters["b"]
 
@@ -80,18 +68,6 @@ class Linear(Module):
     def backward(
         self, deltas: np.ndarray | list[np.ndarray]
     ) -> np.ndarray | list[np.ndarray]:
-        """
-
-        Parameters
-        ----------
-        deltas : np.ndarray | list[np.ndarray]
-
-        Returns
-        -------
-        np.npdarray | list[np.ndarray]
-
-        """
-
         assert self.trainable, "Module is not trainable."
 
         if not isinstance(deltas, list):

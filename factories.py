@@ -1,7 +1,7 @@
 """
 title : factories.py
 create : @tarickali 23/11/26
-update : @tarickali 23/11/27
+update : @tarickali 23/12/05
 """
 
 from typing import Any
@@ -15,6 +15,28 @@ __all__ = ["activation_factory", "initializer_factory"]
 def activation_factory(
     activation: str | dict[str, Any] | Activation = None
 ) -> Activation:
+    """Helper function that acts as a factory to create Activation objects.
+
+    If activation = None, returns the Identity activation.
+
+    Parameters
+    ----------
+    activation : str | dict[str, Any] | Activation = None
+        If str, then represents the name of the Activation.
+        If dict, then represents the name, param dict of the Activation.
+        If Activation, then returns the same object.
+
+    Returns
+    -------
+    Activation
+
+    Raises
+    ------
+    ValueError
+        If the given activation is not recognized.
+
+    """
+
     if activation is None:
         name = "identity"
         params = {}
@@ -55,6 +77,28 @@ def activation_factory(
 def initializer_factory(
     initializer: str | dict[str, Any] | Initializer = None
 ) -> Initializer:
+    """Helper function that acts as a factory to create Initializer objects.
+
+    If initializer = None, returns the RandomNormal initializer.
+
+    Parameters
+    ----------
+    initializer : str | dict[str, Any] | Initializer = None
+        If str, then represents the name of the Initializer.
+        If dict, then represents the name, param dict of the Initializer.
+        If Initializer, then returns the same object.
+
+    Returns
+    -------
+    Initializer
+
+    Raises
+    ------
+    ValueError
+        If the given initializer is not recognized.
+
+    """
+
     if initializer is None:
         name = "random_normal"
         params = {}
