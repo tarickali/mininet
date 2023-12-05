@@ -1,33 +1,39 @@
 """
 title : main.py
 create : @tarickali 23/11/26
-update : @tarickali 23/11/26
+update : @tarickali 23/11/29
 """
 
-import numpy as np
-from modules.linear import Linear
-from initializers import *
+from examples import binary_classification, regression
 
 
 def main():
-    # X = np.array([[1, 2, 3], [4, 5, 6]])
+    binary_classification()
+    # regression()
+    # X, y = make_classification(256, n_informative=5, n_classes=5)
+    # print(X.shape, y.shape)
+    # y = one_hot(y, 5)
+    # print(y)
 
-    # f = Linear(3, 6)
+    # X, y = make_regression(256, n_features=10)
+    # y = y.reshape(-1, 1)
 
-    # Z = f.forward(X)
+    # o = model.forward(X)
+    # delta = loss.grad(y, o)
+    # model.backward(delta)
+    # print(model.modules[0].gradients)
+    # model.modules[0].zero_gradients()
+    # print(model.modules[0].gradients)
 
-    # print(Z)
+    # print(delta.shape)
+    # print(l.shape)
+    # print(l)
 
-    # x = np.array([[0, 1, 2], [2, 3, 4], [12, 3, 4]])
-    # print(x.shape)
-    # std = np.sqrt(2.0 / x.shape[0])
-    # he = np.random.normal(0.0, std, x.shape)
-    # print(he)
-
-    x = np.array([[0, 1, 2], [2, 3, 4], [12, 3, 4]])
-    initializer = RandomUniform()
-    y = initializer(x.shape)
-    print(y)
+    # f = Linear(3, 6, weight_initializer="he_uniform", activation="leaky_relu")
+    # A = f.forward(X)
+    # dX = f.backward(A)
+    # print(A)
+    # print(dX)
 
 
 if __name__ == "__main__":
