@@ -1,7 +1,7 @@
 """
 title : factories.py
 create : @tarickali 23/11/26
-update : @tarickali 23/11/26
+update : @tarickali 23/11/27
 """
 
 from typing import Any
@@ -12,7 +12,23 @@ from initializers import *
 __all__ = ["activation_factory", "initializer_factory"]
 
 
-def activation_factory(name: str, params: dict[str, Any]) -> Activation:
+def activation_factory(
+    activation: str | dict[str, Any] | Activation = None
+) -> Activation:
+    if activation is None:
+        name = "identity"
+        params = {}
+    elif isinstance(activation, str):
+        name = activation
+        params = {}
+    elif isinstance(activation, dict):
+        name = activation["name"]
+        params = activation["params"]
+    elif isinstance(activation, Activation):
+        return activation
+    else:
+        raise ValueError("Cannot interpret given activation for factory.")
+
     match name:
         case "affine":
             return Affine(**params)
@@ -20,7 +36,7 @@ def activation_factory(name: str, params: dict[str, Any]) -> Activation:
             return ELU(**params)
         case "identity":
             return Identity()
-        case "leakyrelu":
+        case "leaky_relu":
             return LeakyReLU(**params)
         case "relu":
             return ReLU()
@@ -36,7 +52,23 @@ def activation_factory(name: str, params: dict[str, Any]) -> Activation:
             raise ValueError(f"Activation: {name} not available.")
 
 
-def initializer_factory(name: str, params: dict[str, Any]) -> Initializer:
+def initializer_factory(
+    initializer: str | dict[str, Any] | Initializer = None
+) -> Initializer:
+    if initializer is None:
+        name = "random_normal"
+        params = {}
+    elif isinstance(initializer, str):
+        name = initializer
+        params = {}
+    elif isinstance(initializer, dict):
+        name = initializer["name"]
+        params = initializer["params"]
+    elif isinstance(initializer, Initializer):
+        return initializer
+    else:
+        raise ValueError("Cannot interpret given activation for factory.")
+
     match name:
         case "constant":
             return Constant(**params)
