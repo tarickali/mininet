@@ -6,6 +6,7 @@ update : @tarickali 23/12/05
 
 import numpy as np
 from core import Loss
+from activations import Softmax
 
 
 class CategoricalCrossentropy(Loss):
@@ -28,7 +29,11 @@ class CategoricalCrossentropy(Loss):
 
     def loss(self, y_true: np.ndarray, y_pred: np.ndarray) -> float:
         eps = np.finfo(float).eps
+        if self.logits:
+            y_pred = Softmax()(y_pred)
         return -np.sum(y_true * np.log(y_pred + eps))
 
     def grad(self, y_true: np.ndarray, y_pred: np.ndarray, **params) -> np.ndarray:
+        if self.logits:
+            y_pred = Softmax()(y_pred)
         return y_pred - y_true

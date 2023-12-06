@@ -4,11 +4,12 @@ create : @tarickali 23/11/26
 update : @tarickali 23/11/29
 """
 
-from examples import binary_classification, regression
+from examples import binary_classification, regression, mnist_driver
 
 
 def main():
-    binary_classification()
+    # binary_classification()
+    mnist_driver()
     # regression()
     # X, y = make_classification(256, n_informative=5, n_classes=5)
     # print(X.shape, y.shape)

@@ -5,7 +5,6 @@ update : @tarickali 23/12/05
 """
 
 from typing import Any
-
 from core import Optimizer
 
 
