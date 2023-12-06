@@ -1,7 +1,7 @@
 """
 title : binary_classification.py
 create : @tarickali 23/11/27
-update : @tarickali 23/11/27
+update : @tarickali 23/12/05
 """
 
 import numpy as np
@@ -10,17 +10,15 @@ import matplotlib.pyplot as plt
 
 from modules import Linear
 from models.sequential import Sequential
-from activations import Sigmoid
 from losses import BinaryCrossentropy
+from optimizers import SGD
 
 
 def binary_classification():
     X, y = make_circles(256, random_state=42)
     y = y.reshape(-1, 1)
 
-    # plt.scatter(X[:, 0], X[:, 1], c=y)
-    # plt.show()
-
+    # ALPHA = 0.08
     ALPHA = 0.03
     EPOCHS = 1000
 
@@ -33,11 +31,11 @@ def binary_classification():
     )
 
     loss = BinaryCrossentropy(logits=False)
+    optimizer = SGD(model.parameters, learning_rate=ALPHA, momentum=0.9, dampening=0.1)
 
     history = []
     for e in range(EPOCHS):
         o = model.forward(X)
-        # o = Sigmoid()(o)
         l = loss.loss(y, o) / y.shape[0]
         history.append(l)
 
@@ -45,14 +43,10 @@ def binary_classification():
         delta = loss.grad(y, o)
         model.backward(delta)
         model.uncache()
-
-        for param, grad in zip(model.parameters, model.gradients):
-            param["W"] -= ALPHA * grad["W"]
-            param["b"] -= ALPHA * grad["b"]
+        optimizer.update(model.gradients)
 
         print(f"Epoch {e} -- loss {l}")
 
-    # o = np.round(Sigmoid()(model.forward(X)))
     o = np.round(model.forward(X))
     print(np.mean(o == y))
 
