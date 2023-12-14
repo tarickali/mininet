@@ -1,32 +1,33 @@
 """
-title : sgd.py
-create : @tarickali 23/12/05
+title : adagrad.py
+create : @tarickali 23/12/06
 update : @tarickali 23/12/06
 """
 
 from typing import Any
+import numpy as np
 from core import Optimizer
 
 
-class SGD(Optimizer):
+class Adagrad(Optimizer):
     def __init__(
         self,
         parameters: list[dict[str, Any]],
         learning_rate: float = 0.01,
-        momentum: float = 0.0,
+        learning_rate_decay: float = 0.0,
         weight_decay: float = 0.0,
-        dampening: float = 0.0,
-        nesterov: bool = False,
+        initial_accumulator_value: float = 0.0,
+        eps: float = 1e-10,
         maximize: bool = False,
     ) -> None:
         super().__init__(parameters, learning_rate)
-        self.momentum = momentum
+        self.learning_rate_decay = learning_rate_decay
         self.weight_decay = weight_decay
-        self.dampening = dampening
-        self.nesterov = nesterov
+        self.initial_accumulator_value = initial_accumulator_value
+        self.eps = eps
         self.maximize = maximize
 
-        self.cache = [{"velocity": {}} for _ in range(len(self.parameters))]
+        self.cache = [{"sum": {}} for _ in range(len(self.parameters))]
 
     def update(self, gradients: list[dict[str, Any]]) -> None:
         if len(self.parameters) != len(gradients):
@@ -35,6 +36,7 @@ class SGD(Optimizer):
             )
 
         L = len(self.parameters)
+        t = self.time + 1
         for l in range(L):
             if self.parameters[l].keys() != gradients[l].keys():
                 raise ValueError("The gradient and parameter keys do not match.")
@@ -45,27 +47,20 @@ class SGD(Optimizer):
 
             for key in param:
                 g = grad[key] + self.weight_decay * param[key]
+                lr = self.learning_rate / (1 + (t - 1) * self.learning_rate_decay)
 
-                if self.momentum != 0.0:
-                    if self.time >= 1:
-                        cache["velocity"][key] = (
-                            self.momentum * cache["velocity"][key] + self.dampening * g
-                        )
-                    else:
-                        cache["velocity"][key] = g
+                if t == 1:
+                    cache["sum"][key] = np.full_like(
+                        param[key], self.initial_accumulator_value
+                    )
+                cache["sum"][key] = cache["sum"][key] + g**2
 
-                    if self.nesterov:
-                        g = g + self.momentum * cache["velocity"][key]
-                    else:
-                        g = cache["velocity"][key]
+                assert g.shape == cache["sum"][key].shape == param[key].shape
 
-                if self.maximize:
-                    param[key] = param[key] + self.learning_rate * g
-                else:
-                    param[key] = param[key] - self.learning_rate * g
+                param[key] = param[key] - lr * g / (cache["sum"][key] ** 0.5 + self.eps)
 
         self.increment()
 
     def reset(self) -> None:
         super().reset()
-        self.cache = [{"velocity": {}} for _ in range(len(self.parameters))]
+        self.cache = [{"sum": {}} for _ in range(len(self.parameters))]

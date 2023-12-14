@@ -1,7 +1,7 @@
 """
 title : mnist.py
 create : @tarickali 23/12/05
-update : @tarickali 23/12/05
+update : @tarickali 23/12/13
 """
 
 import numpy as np
@@ -54,7 +54,7 @@ def mnist_driver():
         X, y, test_size=0.2, random_state=42
     )
 
-    ALPHA = 0.01
+    ALPHA = 0.001
     EPOCHS = 5
 
     model = Sequential(
@@ -82,7 +82,7 @@ def mnist_driver():
             loss = loss_fn(yb, pred)
 
             model.zero_gradients()
-            delta = loss_fn.grad(yb, pred)
+            delta = loss_fn.grad(yb, pred) / len(Xb)
             model.backward(delta)
             optimizer.update(model.gradients)
 
@@ -91,7 +91,6 @@ def mnist_driver():
 
             epoch_loss += loss
             epoch_acc += acc
-
         history.append({"epoch": e, "loss": epoch_loss / n, "acc": epoch_acc / n})
         print(history[-1])
 
